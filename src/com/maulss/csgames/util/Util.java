@@ -4,7 +4,7 @@
  * Created on 07 September 2016 at 12:51 AM.
  */
 
-package com.maulss.csgames;
+package com.maulss.csgames.util;
 
 import java.util.GregorianCalendar;
 

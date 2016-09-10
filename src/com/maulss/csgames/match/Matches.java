@@ -6,8 +6,8 @@
 
 package com.maulss.csgames.match;
 
-import com.maulss.csgames.IOUtil;
-import com.maulss.csgames.Timer;
+import com.maulss.csgames.util.IOUtil;
+import com.maulss.csgames.util.Timer;
 import com.maulss.csgames.table.MatchTable;
 
 import javax.json.Json;
@@ -22,8 +22,6 @@ import java.io.StringWriter;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
-
-import com.maulss.csgames.Timer;
 
 public final class Matches implements Iterable<Match> {
 

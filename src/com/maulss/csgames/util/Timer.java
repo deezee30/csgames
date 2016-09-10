@@ -4,7 +4,7 @@
  * Created on 04 September 2016 at 7:21 PM.
  */
 
-package com.maulss.csgames;
+package com.maulss.csgames.util;
 
 import java.io.Serializable;
 import java.util.concurrent.TimeUnit;

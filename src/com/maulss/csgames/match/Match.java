@@ -6,7 +6,7 @@
 
 package com.maulss.csgames.match;
 
-import com.maulss.csgames.Util;
+import com.maulss.csgames.util.Util;
 import com.sun.istack.internal.NotNull;
 
 import javax.json.JsonObject;

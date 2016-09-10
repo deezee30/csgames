@@ -6,7 +6,8 @@
 
 package com.maulss.csgames.table;
 
-import com.maulss.csgames.IOUtil;
+import com.maulss.csgames.util.Defaults;
+import com.maulss.csgames.util.IOUtil;
 import com.maulss.csgames.match.Match;
 import com.maulss.csgames.match.Matches;
 
@@ -87,6 +88,18 @@ public final class MouseTableListener extends MouseInputAdapter {
 				Match match = Matches.getInstance().getMatchByIndex(row);
 				if (match != null) {
 					IOUtil.openSearchQuery(match.getTeamB());
+				}
+
+				break;
+
+			// Event
+			} case 4: {
+				Match match = Matches.getInstance().getMatchByIndex(row);
+				if (match != null) {
+					String url = Defaults.getTwitchStreamLink(match.getEvent());
+					if (url != null) {
+						IOUtil.openUrl(url);
+					}
 				}
 
 				break;

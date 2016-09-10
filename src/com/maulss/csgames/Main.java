@@ -7,12 +7,17 @@
 package com.maulss.csgames;
 
 import com.maulss.csgames.match.Matches;
+import com.maulss.csgames.util.Defaults;
+import com.maulss.csgames.util.IOUtil;
 
 import javax.swing.*;
 
 public class Main {
 
 	public static void main(String... args) {
+
+		// Initialize defaults
+		Defaults.init();
 
 		// Generate CSGames main folder (%HOME%/Documents/csgames)
 		try {

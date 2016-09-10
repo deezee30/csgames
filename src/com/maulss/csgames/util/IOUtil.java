@@ -4,7 +4,7 @@
  * Created on 03 September 2016 at 11:33 PM.
  */
 
-package com.maulss.csgames;
+package com.maulss.csgames.util;
 
 import com.maulss.csgames.match.Matches;
 
