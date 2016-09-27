@@ -17,7 +17,7 @@ public final class Defaults {
 	private final Map<String, String> streams = new HashMap<String, String>() {{
 		put("Starladder", "starladder_cs_en");
 		put("StarSeries", "starladder_cs_en");
-		put("King Of Nordic", "kingofnordic");
+		put("King of Nordic", "kingofnordic");
 		put("DreamLeague", "dreamleague");
 		put("ESL", "esl_csgo");
 		put("ELeague", "eleaguetv");
