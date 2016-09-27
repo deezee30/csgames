@@ -35,6 +35,7 @@ public final class Matches implements Iterable<Match> {
 	public final Map<String, ImageIcon> matchLogos = new HashMap<>();
 
 	static {
+		// Remove all games that aren't BO1, BO2, BO3, BO5 or BO7
 		INSTANCE.registerMatchFilter(match -> {
 			switch (match.getBestOf()) {
 				case 1:
@@ -45,6 +46,17 @@ public final class Matches implements Iterable<Match> {
 					return true;
 				default:
 					return false;
+			}
+		});
+
+		// Remove all fake matches
+		INSTANCE.registerMatchFilter(match -> {
+			switch (match.getEvent().toLowerCase()) {
+				case "predictions":
+				case "giveaways":
+					return false;
+				default:
+					return true;
 			}
 		});
 
@@ -184,14 +196,16 @@ public final class Matches implements Iterable<Match> {
 		List<Match> filteredMatches = new ArrayList<>();
 
 		int x = 0;
+		int y = 0;
 		for (Match match : matches) {
 			// Keep the size of the list no bigger than required
-			if (x == MatchTable.DISPLAY_RESULTS + 1) break;
+			if (x - y == MatchTable.DISPLAY_RESULTS) break;
 
 			boolean add = true;
 			for (MatchFilter filter : matchFilters) {
 				if (!filter.accept(match)) {
 					add = false;
+					y++;
 					break;
 				}
 			}
