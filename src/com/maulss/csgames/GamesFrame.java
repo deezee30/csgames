@@ -16,17 +16,17 @@ import java.awt.*;
 public class GamesFrame extends JFrame {
 
 	private static final GamesFrame INSTANCE = new GamesFrame();
-	private static final String VERSION = "0.1";
+	private static final String VERSION = "1.0";
 
 	private GamesFrame() {
 		super("CSGames v" + VERSION);
 
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-		// Disable resizing
+		// disable resizing
 		setResizable(false);
 
-		// Setting the look and feel of the interface
+		// setting the look and feel of the interface
 		try {
 			for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
 				if (info.getName().equals("Nimbus")) {
@@ -36,7 +36,7 @@ public class GamesFrame extends JFrame {
 			}
 		} catch (Exception e) {
 
-			// If Nimbus is not available, fall back to cross-platform
+			// if Nimbus is not available, fall back to cross-platform
 			try {
 				UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
 			} catch (Exception ex) {

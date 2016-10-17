@@ -29,7 +29,7 @@ public class MatchTable extends JTable {
 		addMouseMotionListener(listener);
 		addMouseListener(listener);
 
-		// Settings
+		// settings
 		setSelectionBackground(new Color(184, 184, 184));
 		getTableHeader().setReorderingAllowed(false);
 	}
@@ -49,7 +49,7 @@ public class MatchTable extends JTable {
 					tip = match == null ? null : match.getFormattedTime();
 					break;
 				} catch (Exception ex) {
-					// Cell doesn't exist
+					// cell doesn't exist
 					tip = null;
 				}
 				break;
@@ -57,7 +57,7 @@ public class MatchTable extends JTable {
 				try {
 					tip = getValueAt(rowIndex, colIndex).toString();
 				} catch (Exception ex) {
-					// Cell doesn't exist
+					// cell doesn't exist
 					tip = null;
 				}
 		}
@@ -83,10 +83,10 @@ public class MatchTable extends JTable {
 		if (match != null) {
 			if (!match.isClosed()) {
 				if (match.hasStarted()) {
-					// Match is soon to be played
+					// match is soon to be played
 					c.setForeground(new Color(60, 168, 40));
 				} else {
-					// Match is currently live
+					// match is currently live
 					c.setForeground(new Color(2, 115, 168));
 				}
 			} else {
@@ -128,7 +128,7 @@ public class MatchTable extends JTable {
 		for (int x = 0; x < Math.min(DISPLAY_RESULTS, matches.size()); ++x) {
 			Match match = matches.get(x);
 			data[x][0] = match.getId();
-			data[x][1] = match.getFormattedTimeShort();
+			data[x][1] = match.getDynamicTime();
 			//data[x][2] = match.getTeamA();
 			//data[x][3] = match.getTeamB();
 			data[x][4] = match.getEvent();

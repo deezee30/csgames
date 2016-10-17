@@ -16,10 +16,10 @@ public class Main {
 
 	public static void main(String... args) {
 
-		// Initialize defaults
+		// initialize defaults
 		Defaults.init();
 
-		// Generate CSGames main folder (%HOME%/Documents/csgames)
+		// generate CSGames main folder (%HOME%/Documents/csgames)
 		try {
 			IOUtil.generateMainFolder();
 		} catch (Exception e) {
@@ -28,7 +28,7 @@ public class Main {
 			return;
 		}
 
-		// Obtain match info from flatfile
+		// obtain match info from flatfile
 		try {
 			Matches.getInstance();
 		} catch (Exception e) {
@@ -37,7 +37,7 @@ public class Main {
 			return;
 		}
 
-		// Initiate GamesFrame
+		// initiate GamesFrame
 		GamesFrame.getInstance();
 	}
 }

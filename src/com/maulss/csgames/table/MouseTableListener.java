@@ -74,7 +74,7 @@ public final class MouseTableListener extends MouseInputAdapter {
 
 				break;
 
-			// Team A
+			// team A
 			} case 2: {
 				Match match = Matches.getInstance().getMatchByIndex(row);
 				if (match != null) {
@@ -83,7 +83,7 @@ public final class MouseTableListener extends MouseInputAdapter {
 
 				break;
 
-			// Team B
+			// team B
 			} case 3: {
 				Match match = Matches.getInstance().getMatchByIndex(row);
 				if (match != null) {
@@ -92,7 +92,7 @@ public final class MouseTableListener extends MouseInputAdapter {
 
 				break;
 
-			// Event
+			// event
 			} case 4: {
 				Match match = Matches.getInstance().getMatchByIndex(row);
 				if (match != null) {

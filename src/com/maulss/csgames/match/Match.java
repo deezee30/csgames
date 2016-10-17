@@ -6,31 +6,29 @@
 
 package com.maulss.csgames.match;
 
-import com.maulss.csgames.util.Util;
+import com.maulss.csgames.util.DateTimeUtil;
 import com.sun.istack.internal.NotNull;
 
 import javax.json.JsonObject;
 import javax.swing.*;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.Objects;
 
 public final class Match implements Cloneable, Comparable<Match> {
 
-	private static final SimpleDateFormat DATE_FORMAT_SHORT = new SimpleDateFormat("dd/MM/yy @ h:mm a");
-	private static final SimpleDateFormat DATE_FORMAT_LONG = new SimpleDateFormat("EEEEE, d MMMMM yyyy @ h:mm a");
-
 	private final int id;
 	private final long time;
 	private final String teamA;
 	private final String teamB;
-	private final String winner; // null = Undecided winner and "none" = No winner yet
+	private final String winner; // null = undecided winner and "none" = no winner yet
 	private final boolean closed;
 	private final String event;
 	private final short bestOf;
+	private final int aWorth;
+	private final int bWorth;
 
-	private Match(int id, long time, String teamA, String teamB, String winner, boolean closed, String event, short bestOf) {
+	private Match(int id, long time, String teamA, String teamB, String winner, boolean closed, String event, short bestOf, int aWorth, int bWorth) {
 		this.id = id;
 		this.time = time;
 		this.teamA = teamA;
@@ -39,6 +37,8 @@ public final class Match implements Cloneable, Comparable<Match> {
 		this.closed = closed;
 		this.event = event;
 		this.bestOf = bestOf;
+		this.aWorth = aWorth;
+		this.bWorth = bWorth;
 	}
 
 	public int getId() {
@@ -54,16 +54,15 @@ public final class Match implements Cloneable, Comparable<Match> {
 	}
 
 	public String getDynamicTime() {
-		// TODO
-		return getTime().toString();
+		return DateTimeUtil.prettifyTime(time - System.currentTimeMillis());
 	}
 
 	public String getFormattedTimeShort() {
-		return DATE_FORMAT_SHORT.format(getTime());
+		return DateTimeUtil.DATE_FORMAT_SHORT.format(getTime());
 	}
 
 	public String getFormattedTime() {
-		return DATE_FORMAT_LONG.format(getTime());
+		return DateTimeUtil.DATE_FORMAT_LONG.format(getTime());
 	}
 
 	public String getTeamA() {
@@ -98,6 +97,30 @@ public final class Match implements Cloneable, Comparable<Match> {
 		return Matches.getInstance().getLogo(teamB);
 	}
 
+	public int getaWorth() {
+		return aWorth;
+	}
+
+	public int getbWorth() {
+		return bWorth;
+	}
+
+	public float getOddsA() {
+		return calculateOdds(aWorth, bWorth);
+	}
+
+	public float getOddsB() {
+		return 0F;
+	}
+
+	public boolean isUpsetTeamA() {
+		return isClosed() && isWinnerA() && getOddsA() < .4f;
+	}
+
+	public boolean isUpsetTeamB() {
+		return isClosed() && isWinnerB() && getOddsB() < .4f;
+	}
+
 	public boolean hasStarted() {
 		return System.currentTimeMillis() > time;
 	}
@@ -129,6 +152,8 @@ public final class Match implements Cloneable, Comparable<Match> {
 				", closed=" + closed +
 				", event='" + event + '\'' +
 				", bestOf=" + bestOf +
+				", aWorth=" + aWorth +
+				", bWorth=" + bWorth +
 				'}';
 	}
 
@@ -138,22 +163,29 @@ public final class Match implements Cloneable, Comparable<Match> {
 		if (o == null || getClass() != o.getClass()) return false;
 		Match match = (Match) o;
 		return Objects.equals(id, match.id) &&
-				Objects.equals(winner, match.winner) &&
+				Objects.equals(time, match.time) &&
 				Objects.equals(closed, match.closed) &&
 				Objects.equals(bestOf, match.bestOf) &&
-				Objects.equals(time, match.time) &&
+				Objects.equals(aWorth, match.aWorth) &&
+				Objects.equals(bWorth, match.bWorth) &&
 				Objects.equals(teamA, match.teamA) &&
 				Objects.equals(teamB, match.teamB) &&
+				Objects.equals(winner, match.winner) &&
 				Objects.equals(event, match.event);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, time, teamA, teamB, winner, closed, event, bestOf);
+		return Objects.hash(id, time, teamA, teamB, winner, closed, event, bestOf, aWorth, bWorth);
+	}
+
+	@Override
+	public int compareTo(Match o) {
+		return Integer.compare(id, o.id);
 	}
 
 	@NotNull
-	public static Match fromJson(JsonObject jsonObject, boolean local) {
+	public static Match fromJson(JsonObject jsonObject, boolean local) throws ParseException {
 		final int id;
 		long time;
 		final String teamA = jsonObject.getString("a");
@@ -171,11 +203,7 @@ public final class Match implements Cloneable, Comparable<Match> {
 			bestOf = (short) jsonObject.getInt("bestof");
 		} else {
 			id = Integer.valueOf(jsonObject.getString("match"));
-			time = Timestamp.valueOf(jsonObject.getString("when")).getTime();
-			// CSGOLounge timezone is based on offset UTC+2
-			if (Util.TIMEZONE_OFFSET != 2) {
-				time += (Util.TIMEZONE_OFFSET - 1) * 60 * 60 * 1000;
-			}
+			time = DateTimeUtil.CSGOL_DATE_FORMAT.parse(jsonObject.getString("when") + " CEST").toInstant().toEpochMilli();
 			closed = Integer.valueOf(jsonObject.getString("closed")) != 0;
 			bestOf = Short.valueOf(jsonObject.getString("format"));
 			switch (jsonObject.getString("winner")) {
@@ -193,11 +221,10 @@ public final class Match implements Cloneable, Comparable<Match> {
 			}
 		}
 
-		return new Match(id, time, teamA, teamB, winner, closed, event, bestOf);
+		return new Match(id, time, teamA, teamB, winner, closed, event, bestOf, 0, 0);
 	}
 
-	@Override
-	public int compareTo(Match o) {
-		return Integer.compare(id, o.id);
+	private float calculateOdds(int aWorth, int bWorth) {
+		return 0f;
 	}
 }

@@ -6,26 +6,25 @@
 
 package com.maulss.csgames.match;
 
+import com.maulss.csgames.table.MatchTable;
 import com.maulss.csgames.util.IOUtil;
 import com.maulss.csgames.util.Timer;
-import com.maulss.csgames.table.MatchTable;
 
-import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonWriter;
+import javax.json.*;
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.text.ParseException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
+
+import com.maulss.csgames.util.Timer;
 
 public final class Matches implements Iterable<Match> {
 
-	// Disable initialization
+	// disable initialization
 	private Matches() {}
 
 	private static final Matches INSTANCE = new Matches();
@@ -35,7 +34,7 @@ public final class Matches implements Iterable<Match> {
 	public final Map<String, ImageIcon> matchLogos = new HashMap<>();
 
 	static {
-		// Remove all games that aren't BO1, BO2, BO3, BO5 or BO7
+		// remove all games that aren't BO1, BO2, BO3, BO5 or BO7
 		INSTANCE.registerMatchFilter(match -> {
 			switch (match.getBestOf()) {
 				case 1:
@@ -49,7 +48,7 @@ public final class Matches implements Iterable<Match> {
 			}
 		});
 
-		// Remove all fake matches
+		// remove all fake matches
 		INSTANCE.registerMatchFilter(match -> {
 			switch (match.getEvent().toLowerCase()) {
 				case "predictions":
@@ -60,17 +59,17 @@ public final class Matches implements Iterable<Match> {
 			}
 		});
 
-		// Record the time it takes to download all matches
+		// record the time it takes to download all matches
 		Timer timer = new Timer().start();
-		timer.onFinishExecute(() -> JOptionPane.showMessageDialog(null, String.format(
+		/*timer.onFinishExecute(() -> JOptionPane.showMessageDialog(null, String.format(
 				"Successfully loaded %s matches in %ss",
 				INSTANCE.matchCache.size(),
 				(double) timer.getTime(TimeUnit.MILLISECONDS) / 1000D
-		)));
+		)));*/
 
 		INSTANCE.matchCache.clear();
 
-		// Load all match data
+		// load all match data
 		try {
 			INSTANCE.matchCache.addAll(INSTANCE.fromJson(IOUtil.readFromDataFile(), true));
 		} catch (Exception e) {
@@ -78,18 +77,18 @@ public final class Matches implements Iterable<Match> {
 			e.printStackTrace();
 		}
 
-		// Load all icons for the matches
+		// load all icons for the matches
 		for (Match match : INSTANCE) {
 			INSTANCE.loadIcon(match.getTeamA());
 			INSTANCE.loadIcon(match.getTeamB());
 		}
 
-		// Stop the timer and display success message
+		// stop the timer and display success message
 		timer.forceStop();
 	}
 
 	public void downloadMatches() {
-		// Record the time it takes to download all matches
+		// record the time it takes to download all matches
 		Timer timer = new Timer().start();
 		timer.onFinishExecute(() -> JOptionPane.showMessageDialog(null, String.format(
 				"Successfully downloaded %s matches in %ss",
@@ -125,7 +124,7 @@ public final class Matches implements Iterable<Match> {
 			return;
 		}
 
-		// Download the logos of the teams
+		// download the logos of the teams
 		try {
 			List<String> updatedTeams = new ArrayList<>();
 			for (Match match : this) {
@@ -148,15 +147,15 @@ public final class Matches implements Iterable<Match> {
 			return;
 		}
 
-		// Refresh the table to update the new data
+		// refresh the table to update the new data
 		MatchTable.getInstance().update();
 
-		// Stop the timer and display success message
+		// stop the timer and display success message
 		timer.forceStop();
 	}
 
 	public List<Match> getLoadedMatches() {
-		// Create a copy of the cache and restrict modification
+		// create a copy of the cache and restrict modification
 		return Collections.unmodifiableList(new ArrayList<>(matchCache));
 	}
 
@@ -198,7 +197,7 @@ public final class Matches implements Iterable<Match> {
 		int x = 0;
 		int y = 0;
 		for (Match match : matches) {
-			// Keep the size of the list no bigger than required
+			// keep the size of the list no bigger than required
 			if (x - y == MatchTable.DISPLAY_RESULTS) break;
 
 			boolean add = true;
@@ -217,14 +216,17 @@ public final class Matches implements Iterable<Match> {
 		return filteredMatches;
 	}
 
-	private List<Match> fromJson(String json, boolean local) {
-		return Json.createReader(new StringReader(json))
-				.readArray()
-				.stream()
-				.map(value -> Match.fromJson(
-						Json.createReader(new StringReader(value.toString())).readObject(),
-						local
-				)).collect(Collectors.toList());
+	private List<Match> fromJson(String json, boolean local) throws ParseException {
+		List<Match> matches = new ArrayList<>();
+
+		for (JsonValue val : Json.createReader(new StringReader(json)).readArray()) {
+			matches.add(Match.fromJson(
+					Json.createReader(new StringReader(val.toString())).readObject(),
+					local
+			));
+		}
+
+		return matches;
 	}
 
 	private String toJson(List<Match> matches) {

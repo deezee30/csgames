@@ -22,7 +22,7 @@ import java.util.Collections;
 
 public class IOUtil {
 
-	// Disable initialization
+	// disable initialization
 	private IOUtil() {}
 
 	public static final String MAIN_FOLDER_PATH = System.getProperty("user.home") + "/Documents/csgames";
@@ -55,7 +55,7 @@ public class IOUtil {
 
 		URLConnection connection = new URL(address).openConnection();
 
-		// Using custom headers due to forbidden access for non-browsers sometimes
+		// using custom headers due to forbidden access for non-browsers sometimes
 		connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
 		connection.setConnectTimeout(10000);
 		connection.connect();
@@ -90,7 +90,7 @@ public class IOUtil {
 		try {
 			stream = sslConnection(IMAGE_LINK.replace("{TEAM}", team)).getInputStream();
 		} catch (FileNotFoundException ignored) {
-			// Image doesn't exist, use default
+			// image doesn't exist, use default
 			Matches.getInstance().setLogo(team, new ImageIcon(IMAGES_PATH + "/unknown.gif"));
 			return;
 		}
