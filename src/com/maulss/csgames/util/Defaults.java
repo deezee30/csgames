@@ -15,21 +15,23 @@ public final class Defaults {
 
 	private static final Defaults DEFAULTS = new Defaults();
 	private final Map<String, String> streams = new HashMap<String, String>() {{
-		put("Starladder", "starladder_cs_en");
-		put("StarSeries", "starladder_cs_en");
-		put("King of Nordic", "kingofnordic");
-		put("DreamLeague", "dreamleague");
-		put("ESL", "esl_csgo");
-		put("ELeague", "eleaguetv");
-		put("ECS", "faceittv");
-		put("Northern Arena", "northernarena");
-		put("ESWC", "eswc");
-		put("Dreamhack", "dreamhackcs");
-		put("MLG", "mlg");
-		put("WESG", "wesg_main");
-		put("Epicenter", "epicenter_en1");
-		put("99League", "99damage");
-		put("ESEA", "esea");
+		put("Starladder",		"starladder_cs_en");
+		put("StarSeries",		"starladder_cs_en");
+		put("King of Nordic",	"kingofnordic");
+		put("DreamLeague",		"dreamleague");
+		put("ESL",				"esl_csgo");
+		put("ELeague",			"eleaguetv");
+		put("ECS",				"faceittv");
+		put("Northern Arena",	"northernarena");
+		put("ESWC",				"eswc");
+		put("Dreamhack",		"dreamhackcs");
+		put("MLG",				"mlg");
+		put("WESG",				"wesg_main");
+		put("Epicenter",		"epicenter_en1");
+		put("99League",			"99damage");
+		put("ESEA",				"esea");
+		put("WCA",				"uccleague2");
+		put("League Of Sharks",	"leagueofsharks");
 	}};
 
 	public static String getTwitchStreamLink(String event) {
