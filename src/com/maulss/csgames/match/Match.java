@@ -191,8 +191,4 @@ public final class Match implements Cloneable, Comparable<Match> {
 
 		return new Match(id, time, teamA, teamB, winner, closed, event, bestOf);
 	}
-
-	private float calculateOdds(int aWorth, int bWorth) {
-		return 0f;
-	}
 }

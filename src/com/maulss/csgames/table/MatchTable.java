@@ -32,6 +32,7 @@ public class MatchTable extends JTable {
 		// settings
 		setSelectionBackground(new Color(184, 184, 184));
 		getTableHeader().setReorderingAllowed(false);
+		getTableHeader().setResizingAllowed(false);
 	}
 
 	@Override
@@ -138,18 +139,12 @@ public class MatchTable extends JTable {
 		setModel(new MatchTableModel(data, columns));
 
 		TableColumnModel cols = getColumnModel();
-		cols.getColumn(0).setMinWidth(45);
-		cols.getColumn(0).setMaxWidth(45);
-		cols.getColumn(1).setMinWidth(140);
-		cols.getColumn(1).setMaxWidth(140);
-		cols.getColumn(2).setMinWidth(120);
-		cols.getColumn(2).setMaxWidth(120);
-		cols.getColumn(3).setMinWidth(120);
-		cols.getColumn(3).setMaxWidth(120);
-		cols.getColumn(4).setMinWidth(140);
-		cols.getColumn(4).setMaxWidth(170);
-		cols.getColumn(5).setMinWidth(45);
-		cols.getColumn(5).setMaxWidth(55);
+		cols.getColumn(0).setPreferredWidth(45);
+		cols.getColumn(1).setPreferredWidth(140);
+		cols.getColumn(2).setPreferredWidth(120);
+		cols.getColumn(3).setPreferredWidth(120);
+		cols.getColumn(4).setPreferredWidth(140);
+		cols.getColumn(5).setPreferredWidth(45);
 
 		cols.getColumn(2).setCellRenderer(new MatchCellRenderer());
 		cols.getColumn(3).setCellRenderer(new MatchCellRenderer());
