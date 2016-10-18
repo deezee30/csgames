@@ -25,10 +25,8 @@ public final class Match implements Cloneable, Comparable<Match> {
 	private final boolean closed;
 	private final String event;
 	private final short bestOf;
-	private final int aWorth;
-	private final int bWorth;
 
-	private Match(int id, long time, String teamA, String teamB, String winner, boolean closed, String event, short bestOf, int aWorth, int bWorth) {
+	private Match(int id, long time, String teamA, String teamB, String winner, boolean closed, String event, short bestOf) {
 		this.id = id;
 		this.time = time;
 		this.teamA = teamA;
@@ -37,8 +35,6 @@ public final class Match implements Cloneable, Comparable<Match> {
 		this.closed = closed;
 		this.event = event;
 		this.bestOf = bestOf;
-		this.aWorth = aWorth;
-		this.bWorth = bWorth;
 	}
 
 	public int getId() {
@@ -97,30 +93,6 @@ public final class Match implements Cloneable, Comparable<Match> {
 		return Matches.getInstance().getLogo(teamB);
 	}
 
-	public int getaWorth() {
-		return aWorth;
-	}
-
-	public int getbWorth() {
-		return bWorth;
-	}
-
-	public float getOddsA() {
-		return calculateOdds(aWorth, bWorth);
-	}
-
-	public float getOddsB() {
-		return 0F;
-	}
-
-	public boolean isUpsetTeamA() {
-		return isClosed() && isWinnerA() && getOddsA() < .4f;
-	}
-
-	public boolean isUpsetTeamB() {
-		return isClosed() && isWinnerB() && getOddsB() < .4f;
-	}
-
 	public boolean hasStarted() {
 		return System.currentTimeMillis() > time;
 	}
@@ -152,8 +124,6 @@ public final class Match implements Cloneable, Comparable<Match> {
 				", closed=" + closed +
 				", event='" + event + '\'' +
 				", bestOf=" + bestOf +
-				", aWorth=" + aWorth +
-				", bWorth=" + bWorth +
 				'}';
 	}
 
@@ -166,8 +136,6 @@ public final class Match implements Cloneable, Comparable<Match> {
 				Objects.equals(time, match.time) &&
 				Objects.equals(closed, match.closed) &&
 				Objects.equals(bestOf, match.bestOf) &&
-				Objects.equals(aWorth, match.aWorth) &&
-				Objects.equals(bWorth, match.bWorth) &&
 				Objects.equals(teamA, match.teamA) &&
 				Objects.equals(teamB, match.teamB) &&
 				Objects.equals(winner, match.winner) &&
@@ -176,7 +144,7 @@ public final class Match implements Cloneable, Comparable<Match> {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, time, teamA, teamB, winner, closed, event, bestOf, aWorth, bWorth);
+		return Objects.hash(id, time, teamA, teamB, winner, closed, event, bestOf);
 	}
 
 	@Override
@@ -221,7 +189,7 @@ public final class Match implements Cloneable, Comparable<Match> {
 			}
 		}
 
-		return new Match(id, time, teamA, teamB, winner, closed, event, bestOf, 0, 0);
+		return new Match(id, time, teamA, teamB, winner, closed, event, bestOf);
 	}
 
 	private float calculateOdds(int aWorth, int bWorth) {

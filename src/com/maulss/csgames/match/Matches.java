@@ -61,11 +61,15 @@ public final class Matches implements Iterable<Match> {
 
 		// record the time it takes to download all matches
 		Timer timer = new Timer().start();
-		/*timer.onFinishExecute(() -> JOptionPane.showMessageDialog(null, String.format(
+
+		// debug message not to be used in production environment
+		/*
+		timer.onFinishExecute(() -> JOptionPane.showMessageDialog(null, String.format(
 				"Successfully loaded %s matches in %ss",
 				INSTANCE.matchCache.size(),
 				(double) timer.getTime(TimeUnit.MILLISECONDS) / 1000D
-		)));*/
+		)));
+		*/
 
 		INSTANCE.matchCache.clear();
 
